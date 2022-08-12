@@ -12,11 +12,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object Network {
 
-    fun getCurrentWeatherData(
-        okCallBack: () -> Unit = {},
+    // Not figure out the way to return CurrentWeatherData yet.
+    fun fetchCurrentWeather(
+        okCallBack: (weather: CurrentWeatherData?) -> Unit = {},
         errorCallBack: (throwable: Throwable) -> Unit = {},
-    ): CurrentWeatherData? {
-        var currentWeatherData: CurrentWeatherData? = null
+    ) {
 
         weatherProvider
             ?.getCurrentWeatherResponseByLocation("Hanoi,vn")
@@ -25,8 +25,7 @@ object Network {
                     call: Call<CurrentWeatherResponse>,
                     response: Response<CurrentWeatherResponse>
                 ) {
-                    currentWeatherData = response.body()?.toCurrentWeatherData()
-                    okCallBack()
+                    okCallBack(response.body()?.toCurrentWeatherData())
                 }
 
                 override fun onFailure(call: Call<CurrentWeatherResponse>, t: Throwable) {
@@ -34,8 +33,6 @@ object Network {
                 }
             }
             )
-
-        return currentWeatherData
     }
 
     private val weatherProvider: OpenWeatherAPI? by lazy {
