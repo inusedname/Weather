@@ -1,11 +1,23 @@
 package com.vstd.weather
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.vstd.weather.api.Network
+import com.vstd.weather.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        demo()
+    }
+
+    private fun demo() {
+        val currentWeatherData = Network.getCurrentWeatherData()
+        binding.tvMainTemp.text = currentWeatherData?.mainTemp.toString()
+        binding.tvWeatherMainStatus.text = currentWeatherData?.weatherMainStatus
     }
 }
